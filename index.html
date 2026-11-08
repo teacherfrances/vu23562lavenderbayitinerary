@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Our Trip to Lavender Bay</title>
+<style>
+:root{
+  --g900:#143F30; --g700:#1E5B45; --g500:#4F7F6A; --gold:#D4A12A; --brown:#7A5A12;
+  --mint:#E7EFEA; --cream:#FAF3E1; --ink:#1c2a24; --red:#B4462B;
+  --water:#BFDCE3; --water2:#9CC8D3; --land:#F4F1E4; --park:#B9D6A9; --garden:#7FB27A;
+  --head:"Cooper Black","Cooper Std","Cooper",Georgia,"Times New Roman",serif;
+  --body:"Trebuchet MS",Carlito,Calibri,"Segoe UI",Arial,sans-serif;
+  --num:Consolas,"Lucida Console","DejaVu Sans Mono","Courier New",monospace;
+  --fs:20px; --topH:64px;
+}
+*{box-sizing:border-box}
+html{font-size:var(--fs);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--g900);font-family:var(--body);color:var(--ink);line-height:1.4}
+button{font-family:var(--body);touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+h1,h2,h3{font-family:var(--head);font-weight:900;margin:0;color:var(--g900);line-height:1.1}
+p{margin:0}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:20;height:var(--topH);background:var(--g900);border-bottom:3px solid var(--gold);display:flex;align-items:center;gap:10px;padding:0 14px}
+.top .vu{background:var(--gold);color:var(--g900);border-radius:999px;padding:4px 12px;font-weight:900;font-size:16px}
+.top .ttl{color:#fff;font-weight:700;font-size:18px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.szgrp{display:flex}
+.szgrp button{min-width:52px;min-height:48px;border:2px solid var(--g500);background:transparent;color:#fff;font-weight:900;font-size:20px;cursor:pointer}
+.szgrp button:first-child{border-radius:10px 0 0 10px;border-right:1px solid var(--g500)}
+.szgrp button:last-child{border-radius:0 10px 10px 0;border-left:1px solid var(--g500)}
+.szgrp button:disabled{opacity:.4;cursor:default}
+
+main{max-width:1180px;margin:0 auto;padding:14px 12px 30px;display:flex;flex-direction:column;gap:16px}
+.card{background:var(--cream);border-radius:18px;padding:22px 24px}
+.card h2{font-size:1.8rem;margin-bottom:10px}
+.lead{font-size:1rem;color:var(--g700);margin-bottom:12px}
+
+/* hero */
+.hero{background:var(--g900);color:#fff;border:3px solid var(--gold);border-radius:18px;padding:22px 24px}
+.hero .tag{display:inline-block;background:var(--gold);color:var(--g900);font-weight:900;font-size:.8rem;padding:4px 14px;border-radius:999px;letter-spacing:.5px}
+.hero h1{color:#fff;font-size:2.5rem;margin-top:12px}
+.hero .date{color:var(--gold);font-size:1.25rem;font-weight:700;margin-top:6px}
+.meet{display:flex;gap:14px;margin-top:16px;flex-wrap:wrap}
+.pill{flex:1 1 220px;background:var(--g700);border:3px solid var(--gold);border-radius:16px;padding:12px 18px;font-size:1rem;color:#fff}
+.pill b{color:var(--gold);font-family:var(--num);font-size:1.6rem;display:block}
+
+/* bring */
+.bring{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.item{position:relative;background:#fff;border:3px solid var(--mint);border-radius:16px;padding:12px;text-align:center;cursor:pointer;font:inherit;color:inherit;width:100%;transition:background .2s,border-color .2s}
+.item:hover{border-color:var(--g500)}
+.item:focus-visible{outline:4px solid var(--gold);outline-offset:2px}
+.item .tick{position:absolute;top:8px;right:8px;width:32px;height:32px;border-radius:8px;border:3px solid var(--g500);background:#fff;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:20px;line-height:1}
+.item.on{background:#E3F1E6;border-color:var(--g700)}
+.item.on .tick{background:var(--g700);border-color:var(--g700)}
+.item.on .em{background:#fff}
+.packbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:-2px 0 12px}
+.packcount{font-weight:700;color:var(--g900);font-size:1rem}
+.packmeter{flex:1 1 140px;height:14px;border-radius:7px;background:var(--mint);overflow:hidden}
+.packmeter i{display:block;height:100%;width:0;background:var(--gold);transition:width .3s}
+.packdone{display:none;background:var(--g700);color:#fff;border-radius:10px;padding:6px 12px;font-weight:700;font-size:.9rem}
+.packdone.on{display:inline-block}
+.item .em{width:68px;height:68px;margin:0 auto 6px;border-radius:50%;background:var(--mint);display:flex;align-items:center;justify-content:center}
+.item .em svg{width:40px;height:40px;fill:var(--g700)}
+.item b{display:block;font-size:1.05rem;color:var(--g900);padding:0 14px;overflow-wrap:anywhere}
+.item span{overflow-wrap:anywhere}
+.item span{font-size:.85rem;color:var(--g700)}
+
+/* map layout */
+.maprow{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:18px;align-items:start}
+.maprow > *{min-width:0}
+.mapcol{position:sticky;top:calc(var(--topH) + 10px);z-index:5;background:var(--cream);padding-bottom:6px}
+.mapwrap{position:relative;max-width:100%;border:4px solid var(--g500);border-radius:16px;overflow:hidden;background:var(--land)}
+.mapscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+.mapscroll svg{display:block;width:100%;height:auto;aspect-ratio:820/600}
+.nts{position:absolute;left:10px;bottom:8px;background:rgba(255,255,255,.92);border-radius:8px;padding:3px 9px;font-size:13px;font-weight:700;color:var(--brown);pointer-events:none}
+.compass{position:absolute;right:10px;top:10px;width:40px;height:40px;border-radius:50%;background:#fff;border:3px solid var(--g500);display:flex;align-items:center;justify-content:center;font-family:var(--head);font-size:19px;color:var(--g900);pointer-events:none}
+.compass:before{content:"";position:absolute;top:-11px;left:50%;transform:translateX(-50%);border:7px solid transparent;border-bottom:11px solid var(--red)}
+.ctrl{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.btn{min-height:48px;min-width:52px;border-radius:12px;border:none;font-size:17px;font-weight:700;cursor:pointer;padding:0 16px}
+.btn.main{background:var(--gold);color:var(--g900)}
+.btn.ghost{background:var(--mint);color:var(--g900);border:2px solid var(--g500)}
+.btn:disabled{opacity:.45;cursor:default}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:14px;color:var(--g700);font-weight:700}
+.legend span{display:flex;align-items:center;gap:6px}
+.swipe{display:none;font-size:14px;font-weight:700;color:var(--g700);margin-top:4px}
+
+/* svg */
+.lbl{font-family:"Trebuchet MS",Arial,sans-serif;font-size:15px;font-weight:700;fill:#6c6a5a;pointer-events:none}
+.lbl.w{fill:#2f6f80;font-style:italic;font-size:18px}
+.pin{cursor:pointer}
+.pin text{font-family:"Trebuchet MS",Arial,sans-serif;font-weight:700;font-size:19px;fill:var(--g900)}
+.pin rect{fill:#fff;stroke:var(--g500);stroke-width:2;transition:fill .2s}
+.pin circle.o{fill:#fff;stroke:var(--g900);stroke-width:5}
+.pin circle.i{fill:var(--g700)}
+.pin.done circle.i{fill:var(--gold)}
+.pin.cur rect{fill:#FFF0C2;stroke:var(--gold);stroke-width:3}
+.pin.cur circle.o{stroke:var(--gold);stroke-width:7}
+.walker{fill:var(--red);stroke:#fff;stroke-width:4}
+@keyframes pulse{0%{r:14;opacity:.55}100%{r:34;opacity:0}}
+.halo{fill:var(--red);animation:pulse 1.4s infinite;pointer-events:none}
+.bubble rect{fill:var(--g900)}
+.bubble text{font-family:"Trebuchet MS",Arial,sans-serif;font-weight:700;font-size:17px;fill:#fff}
+.donepath{fill:none;stroke:var(--red);stroke-width:4;stroke-linecap:round;opacity:.0}
+.area{cursor:pointer}
+.hl{fill:none;stroke:var(--red);stroke-width:5;stroke-dasharray:10 6;opacity:0;transition:opacity .25s;pointer-events:none}
+.hl.on{opacity:1}
+
+/* directions */
+.dirs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.dirs li{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;background:#fff;border:3px solid var(--mint);border-left:8px solid var(--g700);border-radius:14px;padding:10px 14px;cursor:pointer;transition:background .2s,border-color .2s,transform .2s;scroll-margin-top:calc(var(--topH) + 20px)}
+.dirs li.t{border-left-color:var(--gold)}
+.dirs li:hover{border-color:var(--g500)}
+.dirs li:focus-visible{outline:4px solid var(--gold);outline-offset:2px}
+.dirs li.cur{background:#FFF6DB;border-color:var(--gold);border-left-color:var(--red);box-shadow:0 3px 0 var(--gold)}
+.dirs li.done .n{background:var(--g500)}
+.dirs .n{grid-row:span 2;width:42px;height:42px;border-radius:50%;background:var(--g900);color:var(--gold);font-family:var(--head);font-size:1.15rem;display:flex;align-items:center;justify-content:center;align-self:start}
+.dirs li.cur .n{background:var(--red);color:#fff}
+.dirs .hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.dirs .tm{font-family:var(--num);font-weight:700;color:var(--g700);font-size:1rem}
+.dirs .pl{font-weight:700;font-size:1.05rem;color:var(--g900)}
+.dirs .mode{display:inline-block;background:var(--mint);color:var(--g900);border-radius:8px;padding:0 8px;font-weight:700;font-size:.8rem}
+.dirs li.t .mode{background:#FBEFD2;color:var(--brown)}
+.dirs .here{display:none;background:var(--red);color:#fff;border-radius:8px;padding:0 8px;font-weight:700;font-size:.75rem}
+.dirs li.cur .here{display:inline-block}
+.dirs .wh{font-size:1rem}
+.tiphint{font-size:15px;font-weight:700;color:var(--brown);background:#FBEFD2;border-radius:10px;padding:6px 10px;margin-bottom:10px}
+
+/* notes */
+.notes2{display:flex;flex-direction:column;gap:10px}
+.note{display:flex;gap:12px;align-items:flex-start;background:#fff;border:3px solid var(--mint);border-radius:14px;padding:10px 14px;font-size:1rem;transition:background .2s,border-color .2s}
+.note[data-n]{cursor:pointer}
+.note[data-n]:focus-visible{outline:4px solid var(--gold);outline-offset:2px}
+.note.cur{background:#FFF6DB;border-color:var(--gold)}
+.note b{color:var(--g900)}
+.note .ic{flex:none;width:40px;height:40px;border-radius:50%;background:var(--g700);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.85rem}
+.note.warn{background:#FBEFD2;border-color:#F0DDB0}.note.warn .ic{background:var(--brown);font-size:1.1rem}
+.note.warn.cur{border-color:var(--gold)}
+.foot{color:#cfe3d9;font-size:.8rem;text-align:center;padding:4px 10px 0}
+
+/* single column (phones, small tablets) */
+@media (max-width:900px){
+  .maprow{grid-template-columns:minmax(0,1fr)}
+  .mapcol{top:var(--topH);margin:0 -14px;padding:6px 14px 8px;border-bottom:3px solid var(--mint)}
+  .mapscroll svg{width:auto;height:min(40vh,439px);max-width:none}
+  .swipe{display:block}
+}
+@media (max-width:900px) and (min-width:661px){
+  .mapscroll svg{width:100%;height:auto}
+  .swipe{display:none}
+}
+/* short screens (phone held sideways): map does not stick */
+@media (max-height:600px){
+  .mapcol{position:static;margin:0;padding:0 0 6px;border-bottom:0}
+  .mapscroll svg{width:100%;height:auto;min-width:560px}
+}
+@media (max-width:700px){
+  main{padding:10px 8px 24px;gap:12px}
+  .card,.hero{padding:16px 14px;border-radius:14px}
+  .mapcol{margin:0 -14px}
+  .hero h1{font-size:2rem}
+  .card h2{font-size:1.5rem}
+  .bring{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .item .em{width:56px;height:56px}
+  .item .em svg{width:32px;height:32px}
+  .top .ttl{display:none}
+  .top{justify-content:space-between}
+  .btn{font-size:16px;padding:0 12px}
+}
+@media (max-width:360px){
+  .bring{grid-template-columns:minmax(0,1fr)}
+  .dirs li{padding:8px 10px;gap:4px 8px}
+  .dirs .n{width:36px;height:36px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+@media print{body{background:#fff}.top,.ctrl,.swipe,.tiphint{display:none}.mapcol{position:static}.card,.hero{break-inside:avoid}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <span class="vu">VU23562</span>
+  <span class="ttl">Our trip to Lavender Bay</span>
+  <span class="szgrp"><button id="aMinus" aria-label="Smaller text">A&#8722;</button><button id="aPlus" aria-label="Bigger text">A+</button></span>
+</header>
+
+<main>
+
+<section class="hero">
+  <span class="tag">CLASS EXCURSION</span>
+  <h1>Our trip to Lavender Bay</h1>
+  <p class="date">Monday 9 November</p>
+  <div class="meet">
+    <div class="pill">Meet<b>9:10 am</b>St Leonards Station</div>
+    <div class="pill">Back in class<b>2:00 pm</b>Train back to St Leonards</div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>What to bring</h2>
+  <p class="lead">Tap each thing when you pack it.</p>
+  <div class="packbar"><span class="packcount" id="packCount">0 of 9 packed</span><span class="packmeter" aria-hidden="true"><i id="packMeter"></i></span><span class="packdone" id="packDone">All packed!</span><button class="btn ghost" id="packClear">Clear ticks</button></div>
+  <div class="bring" id="bring">
+    <button type="button" class="item" aria-pressed="false"><span class="tick" aria-hidden="true"></span><div class="em"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2.5"/><rect x="5" y="9" width="7" height="2" fill="#fff"/></svg></div><b>Opal card</b><span>Tap on and tap off</span></button>
+    <button type="button" class="item" aria-pressed="false"><span class="tick" aria-hidden="true"></span><div class="em"><svg viewBox="0 0 24 24"><path d="M9 2h6v3l2 3v13a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V8l2-3z"/></svg></div><b>Water</b><span>A full bottle</span></button>
+    <button type="button" class="item" aria-pressed="false"><span class="tick" aria-hidden="true"></span><div class="em"><svg viewBox="0 0 24 24"><path d="M4 15c0-5 3.6-9 8-9s8 4 8 9h2v2H2v-2z"/></svg></div><b>Hat</b><span>And sunscreen</span></button>
+    <button type="button" class="item" aria-pressed="false"><span class="tick" aria-hidden="true"></span><div class="em"><svg viewBox="0 0 24 24"><path d="M8 3l4 2 4-2 5 4-2 4-2-1v11H7V10l-2 1-2-4z"/><path d="M12 5v15" stroke="#fff" stroke-width="1.5"/></svg></div><b>Jacket</b><span>Something warm, if it gets cold</span></button>
+    <button type="button" class="item" aria-pressed="false"><span class="tick" aria-hidden="true"></span><div class="em"><svg viewBox="0 0 24 24"><path d="M2 15l4-6 4 2 5-3 3 2 4 3v4H2z"/></svg></div><b>Good shoes</b><span>There are many steps</span></button>
+    <button type="button" class="item" aria-pressed="false"><span class="tick" aria-hidden="true"></span><div class="em"><svg viewBox="0 0 24 24"><path d="M3 10h18l-2 10H5z"/><path d="M8 10l4-6 4 6" fill="none" stroke="#1E5B45" stroke-width="2"/></svg></div><b>Lunch</b><span>For a picnic</span></button>
+    <button type="button" class="item" aria-pressed="false"><span class="tick" aria-hidden="true"></span><div class="em"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2.5"/><rect x="8" y="5" width="8" height="12" fill="#fff"/></svg></div><b>Phone</b><span>Charged, for the photo hunt</span></button>
+    <button type="button" class="item" aria-pressed="false"><span class="tick" aria-hidden="true"></span><div class="em"><svg viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 1 6 6c0 2-1 3-2 4v3H8v-3c-1-1-2-2-2-4a6 6 0 0 1 6-6zM9 18h6v2H9z"/></svg></div><b>Medicine</b><span>If you need it</span></button>
+    <button type="button" class="item" aria-pressed="false"><span class="tick" aria-hidden="true"></span><div class="em"><svg viewBox="0 0 24 24"><path d="M4 4h16v14H7l-3 3z"/></svg></div><b>Questions</b><span>Ask your teacher</span></button>
+  </div>
+</section>
+
+<!-- ROUTE -->
+<section class="card" id="routeCard">
+  <h2>Our route</h2>
+  <p class="lead">Read the directions. Tap a step to see it on the map.</p>
+  <div class="maprow">
+    <div class="mapcol">
+      <div class="mapwrap">
+        <div class="mapscroll" id="routeScroll">
+          <svg id="map" viewBox="0 0 820 600" role="img" aria-label="Map of the route from St Leonards Station to Lavender Bay">
+            <ellipse cx="640" cy="160" rx="70" ry="40" fill="#DDE9CF"/>
+            <ellipse cx="250" cy="420" rx="80" ry="45" fill="#DDE9CF"/>
+            <path d="M60,40 C200,120 380,190 600,230 L800,260" stroke="#E2DCC6" stroke-width="16" fill="none" stroke-linecap="round"/>
+            <text class="lbl" x="250" y="118" transform="rotate(24 250 118)">Pacific Highway</text>
+            <path d="M368,270 L380,470" stroke="#E2DCC6" stroke-width="12" fill="none"/>
+            <text class="lbl" x="352" y="360" transform="rotate(-86 352 360)">Blues Point Road</text>
+            <path d="M372,392 L640,382" stroke="#E2DCC6" stroke-width="12" fill="none"/>
+            <text class="lbl" x="548" y="376">Lavender Street</text>
+            <path d="M0,560 C140,548 250,556 330,532 C360,500 390,478 440,474 C510,468 570,482 610,504 C650,524 690,522 730,508 L820,496 L820,600 L0,600Z" fill="var(--water)"/>
+            <path d="M0,585 C200,575 420,590 820,560 L820,600 L0,600Z" fill="var(--water2)"/>
+            <text class="lbl w" x="372" y="548">Lavender Bay</text>
+            <text class="lbl w" x="380" y="592">Sydney Harbour</text>
+            <path d="M745,470 L820,600" stroke="#6f7a7a" stroke-width="10"/>
+            <path d="M752,520 Q800,470 820,540" stroke="#6f7a7a" stroke-width="5" fill="none"/>
+            <text class="lbl" x="812" y="592" text-anchor="end" style="font-size:16px">Harbour Bridge</text>
+            <path d="M520,250 C505,320 440,400 452,446 C470,470 600,456 650,460 C690,462 720,458 745,452" stroke="#C9CCC4" stroke-width="4" fill="none"/>
+            <path d="M120,70 C130,120 150,150 170,165 C210,195 250,225 290,235 C370,255 450,255 520,250" stroke="var(--gold)" stroke-width="12" fill="none" stroke-linecap="round"/>
+            <circle cx="170" cy="165" r="9" fill="#fff" stroke="var(--brown)" stroke-width="4"/>
+            <circle cx="290" cy="235" r="9" fill="#fff" stroke="var(--brown)" stroke-width="4"/>
+            <text class="lbl" x="186" y="160">Wollstonecraft</text>
+            <text class="lbl" x="232" y="270">Waverton</text>
+            <path d="M520,250 C522,300 515,350 500,386 C485,392 465,393 450,395 C446,408 444,418 442,428 C460,446 500,470 540,478 C590,486 640,492 690,494 C696,505 700,512 702,520" stroke="var(--g700)" stroke-width="7" stroke-dasharray="14 9" fill="none" stroke-linecap="round"/>
+            <path d="M560,482 C600,440 610,380 590,330 C575,290 545,262 520,250" stroke="var(--g500)" stroke-width="5" stroke-dasharray="4 9" fill="none" stroke-linecap="round" opacity=".85"/>
+            <g id="segs" fill="none" stroke="none">
+              <path id="s0" d="M120,70 C130,120 150,150 170,165 C210,195 250,225 290,235 C370,255 450,255 520,250"/>
+              <path id="s1" d="M520,250 C522,300 515,350 500,386"/>
+              <path id="s2" d="M500,386 C485,392 465,393 450,395"/>
+              <path id="s3" d="M450,395 C446,408 444,418 442,428"/>
+              <path id="s4" d="M442,428 C460,446 500,470 540,478"/>
+              <path id="s5" d="M540,478 C590,486 640,492 690,494 C696,505 700,512 702,520"/>
+              <path id="s6" d="M702,520 C700,512 696,505 690,494 C640,492 600,486 560,482"/>
+              <path id="s7" d="M560,482 C600,440 610,380 590,330 C575,290 545,262 520,250"/>
+              <path id="s8" d="M520,250 C450,255 370,255 290,235 C250,225 210,195 170,165 C150,150 130,120 120,70"/>
+            </g>
+            <g class="pin" data-pin="0" transform="translate(120,70)"><rect x="18" y="-16" width="196" height="32" rx="9"/><text x="28" y="7">St Leonards Station</text><circle class="o" r="15"/><circle class="i" r="7"/></g>
+            <g class="pin" data-pin="1" transform="translate(520,250)"><rect x="18" y="-46" width="208" height="32" rx="9"/><text x="28" y="-23">North Sydney Station</text><circle class="o" r="15"/><circle class="i" r="7"/></g>
+            <g class="pin" data-pin="2" transform="translate(450,395)"><rect x="-150" y="-36" width="124" height="32" rx="9"/><text x="-140" y="-13">Clark Park</text><circle class="o" r="13"/><circle class="i" r="6"/></g>
+            <g class="pin" data-pin="3" transform="translate(442,428)"><rect x="-246" y="-6" width="226" height="32" rx="9"/><text x="-236" y="17">Wendy's Secret Garden</text><circle class="o" r="13"/><circle class="i" r="6"/></g>
+            <g class="pin" data-pin="4" transform="translate(540,478)"><rect x="-232" y="8" width="214" height="32" rx="9"/><text x="-222" y="31">Lavender Bay foreshore</text><circle class="o" r="13"/><circle class="i" r="6"/></g>
+            <g class="pin" data-pin="5" transform="translate(702,520)"><rect x="-196" y="22" width="190" height="32" rx="9"/><text x="-186" y="45">Milsons Point wharf</text><circle class="o" r="13"/><circle class="i" r="6"/></g>
+            <g transform="translate(700,462)" pointer-events="none"><circle r="18" fill="#F4C64E" stroke="var(--brown)" stroke-width="3"/><circle cx="-6" cy="-4" r="3" fill="var(--brown)"/><circle cx="6" cy="-4" r="3" fill="var(--brown)"/><path d="M-8,5 Q0,12 8,5" stroke="var(--brown)" stroke-width="3" fill="none"/></g>
+            <text class="lbl" x="724" y="452" style="fill:var(--brown);font-size:17px">Luna Park</text>
+            <circle id="halo" class="halo" cx="120" cy="70" r="14"/>
+            <circle id="walker" class="walker" cx="120" cy="70" r="12" pointer-events="none"/>
+            <g id="bubble" class="bubble" pointer-events="none"><rect x="0" y="0" width="120" height="30" rx="8"/><text id="bubbleT" x="10" y="21">1 &#183; 9:10 am</text></g>
+          </svg>
+        </div>
+        <span class="nts">Not to scale</span>
+        <span class="compass">N</span>
+      </div>
+      <p class="swipe">Swipe the map to see all of it.</p>
+      <div class="ctrl">
+        <button class="btn main" id="playBtn">&#9654; Play the route</button>
+        <button class="btn ghost" id="prevStep" aria-label="Previous step">&#9664;</button>
+        <button class="btn ghost" id="nextStep" aria-label="Next step">&#9654;</button>
+        <div class="legend">
+          <span><svg width="30" height="10" aria-hidden="true"><line x1="2" y1="5" x2="28" y2="5" stroke="#D4A12A" stroke-width="7" stroke-linecap="round"/></svg>Train</span>
+          <span><svg width="30" height="10" aria-hidden="true"><line x1="2" y1="5" x2="28" y2="5" stroke="#1E5B45" stroke-width="5" stroke-dasharray="7 5"/></svg>Walk</span>
+          <span><svg width="30" height="10" aria-hidden="true"><line x1="2" y1="5" x2="28" y2="5" stroke="#4F7F6A" stroke-width="4" stroke-dasharray="3 5"/></svg>Walk back</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p class="tiphint">Tap a step. Or tap a place on the map.</p>
+      <ol class="dirs" id="dirs">
+        <li tabindex="0" role="button" class="cur"><span class="n">1</span><div class="hd"><span class="tm">9:10 am</span><span class="pl">St Leonards Station</span><span class="here">You are here</span></div><p class="wh">Meet your class. Tap on with your Opal card.</p></li>
+        <li tabindex="0" role="button" class="t"><span class="n">2</span><div class="hd"><span class="tm">9:15 am</span><span class="mode">Train</span><span class="here">You are here</span></div><p class="wh">Take the train to the City. It stops at Wollstonecraft and Waverton. Get off at <b>North Sydney</b>. Tap off.</p></li>
+        <li tabindex="0" role="button"><span class="n">3</span><div class="hd"><span class="tm">9:25 am</span><span class="mode">Walk</span><span class="here">You are here</span></div><p class="wh">Walk down to <b>Lavender Street</b>. It takes about 15 minutes.</p></li>
+        <li tabindex="0" role="button"><span class="n">4</span><div class="hd"><span class="tm">9:40 am</span><span class="pl">Clark Park</span><span class="here">You are here</span></div><p class="wh">Go into Clark Park from Lavender Street. Walk through the park.</p></li>
+        <li tabindex="0" role="button"><span class="n">5</span><div class="hd"><span class="tm">9:45 am</span><span class="pl">Wendy's Secret Garden</span><span class="here">You are here</span></div><p class="wh">Go down the steps into the garden. Explore and do the photo hunt.</p></li>
+        <li tabindex="0" role="button"><span class="n">6</span><div class="hd"><span class="tm">11:00 am</span><span class="pl">Lavender Bay foreshore</span><span class="here">You are here</span></div><p class="wh">Walk down to the water. Look at Luna Park and the Harbour Bridge.</p></li>
+        <li tabindex="0" role="button"><span class="n">7</span><div class="hd"><span class="tm">11:30 am</span><span class="pl">Milsons Point wharf</span><span class="here">You are here</span></div><p class="wh">Walk along the water to the ferry wharf next to Luna Park.</p></li>
+        <li tabindex="0" role="button"><span class="n">8</span><div class="hd"><span class="tm">12:00 pm</span><span class="pl">Picnic lunch</span><span class="here">You are here</span></div><p class="wh">Walk back along the water. Have lunch by the bay.</p></li>
+        <li tabindex="0" role="button"><span class="n">9</span><div class="hd"><span class="tm">1:15 pm</span><span class="mode">Walk</span><span class="here">You are here</span></div><p class="wh">Walk back up to <b>North Sydney Station</b>. Tap on.</p></li>
+        <li tabindex="0" role="button" class="t"><span class="n">10</span><div class="hd"><span class="tm">1:35 pm</span><span class="mode">Train</span><span class="here">You are here</span></div><p class="wh">Take the train to <b>St Leonards</b>. Tap off.</p></li>
+        <li tabindex="0" role="button"><span class="n">11</span><div class="hd"><span class="tm">2:00 pm</span><span class="pl">Back in class</span><span class="here">You are here</span></div><p class="wh">Walk back to class with your group.</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSE-UP -->
+<section class="card">
+  <h2>Clark Park to the garden</h2>
+  <p class="lead">Tap a note to see the place on the map.</p>
+  <div class="maprow">
+    <div class="mapcol">
+      <div class="mapwrap">
+        <div class="mapscroll" id="closeScroll">
+          <svg id="cmap" viewBox="0 0 820 600" role="img" aria-label="Close-up map of Clark Park and Wendy's Secret Garden">
+            <rect x="0" y="34" width="820" height="46" fill="#E2DCC6"/>
+            <text class="lbl" x="20" y="64" style="font-size:20px;fill:#5d5a49">Lavender Street</text>
+            <rect class="area" data-n="2" x="140" y="92" width="430" height="150" rx="16" fill="var(--park)"/>
+            <g fill="#5E9A5A" pointer-events="none"><circle cx="190" cy="130" r="22"/><circle cx="250" cy="200" r="26"/><circle cx="540" cy="122" r="22"/><circle cx="545" cy="210" r="20"/><circle cx="420" cy="214" r="16"/></g>
+            <text x="262" y="150" pointer-events="none" style="font:900 26px Georgia,serif;fill:var(--g900)">Clark Park</text>
+            <text class="lbl" x="262" y="176" style="font-size:17px;fill:#2f5b3a">flat grass and big trees</text>
+            <path d="M480,80 L480,245" stroke="var(--g700)" stroke-width="7" stroke-dasharray="14 9" fill="none" pointer-events="none"/>
+            <g class="area" data-n="1" transform="translate(480,86)"><rect x="-58" y="-2" width="116" height="28" rx="8" fill="var(--g900)"/><text x="0" y="18" text-anchor="middle" style="font:700 17px 'Trebuchet MS',Arial;fill:#fff">Way in</text></g>
+            <path class="area" data-n="3" d="M110,248 L600,248 L630,420 L90,420Z" fill="var(--garden)"/>
+            <g fill="#4E8A4A" pointer-events="none"><circle cx="160" cy="320" r="26"/><circle cx="230" cy="385" r="28"/><circle cx="320" cy="340" r="24"/><circle cx="575" cy="385" r="22"/><circle cx="380" cy="398" r="16"/><circle cx="130" cy="395" r="18"/></g>
+            <path d="M480,248 L430,290 L540,322 L450,360 L520,405" stroke="#F4ECD3" stroke-width="12" fill="none" stroke-linejoin="round" pointer-events="none"/>
+            <path d="M480,248 L430,290 L540,322 L450,360 L520,405" stroke="#9c8f6c" stroke-width="12" fill="none" stroke-dasharray="3 7" stroke-linejoin="round" pointer-events="none"/>
+            <text x="140" y="282" pointer-events="none" style="font:900 24px Georgia,serif;fill:#fff">Wendy's Secret Garden</text>
+            <g transform="translate(548,300)" pointer-events="none"><rect x="-4" y="-22" width="128" height="30" rx="8" fill="#FBEFD2" stroke="var(--brown)" stroke-width="2"/><text x="8" y="0" style="font:700 17px 'Trebuchet MS',Arial;fill:var(--brown)">Many steps</text></g>
+            <line x1="60" y1="436" x2="760" y2="436" stroke="#8f948f" stroke-width="6"/>
+            <line x1="60" y1="436" x2="760" y2="436" stroke="#8f948f" stroke-width="16" stroke-dasharray="3 12"/>
+            <text class="lbl" x="70" y="462">Railway line (trains to Milsons Point)</text>
+            <path d="M690,80 L690,300" stroke="#9c8f6c" stroke-width="12" stroke-dasharray="3 6"/>
+            <text class="lbl" x="704" y="130" transform="rotate(90 704 130)">Walker Street steps</text>
+            <g class="area" data-n="4"><rect x="640" y="300" width="160" height="110" rx="14" fill="var(--park)"/>
+            <text x="652" y="335" style="font:900 19px Georgia,serif;fill:var(--g900)">Quibaree Park</text>
+            <g transform="translate(720,370)"><rect x="-26" y="-20" width="52" height="40" rx="8" fill="#2f6f80"/><text x="0" y="8" text-anchor="middle" style="font:900 20px 'Trebuchet MS',Arial;fill:#fff">WC</text></g></g>
+            <rect x="0" y="474" width="820" height="18" fill="#E9E1C8"/>
+            <text class="lbl" x="560" y="488" style="font-size:14px">foreshore path</text>
+            <path d="M0,492 L820,492 L820,600 L0,600Z" fill="var(--water)"/>
+            <text class="lbl w" x="200" y="535" style="font-size:24px">Lavender Bay</text>
+            <text class="lbl w" x="440" y="560" style="font-size:18px">View: Luna Park and the Harbour Bridge &#8594;</text>
+            <!-- highlights -->
+            <rect id="hl1" class="hl" x="400" y="30" width="160" height="70" rx="12"/>
+            <rect id="hl2" class="hl" x="132" y="86" width="446" height="162" rx="20"/>
+            <path id="hl3" class="hl" d="M104,244 L606,244 L638,424 L82,424Z"/>
+            <rect id="hl4" class="hl" x="632" y="292" width="176" height="126" rx="18"/>
+            <path id="cpath" d="M480,52 L480,248 L430,290 L540,322 L450,360 L520,405" fill="none" stroke="none"/>
+            <circle id="chalo" class="halo" cx="480" cy="52" r="14"/>
+            <circle id="cwalker" class="walker" cx="480" cy="52" r="12" pointer-events="none"/>
+          </svg>
+        </div>
+        <span class="nts">Not to scale</span>
+        <span class="compass">N</span>
+      </div>
+      <p class="swipe">Swipe the map to see all of it.</p>
+      <div class="ctrl"><button class="btn main" id="cPlay">&#9654; Walk into the garden</button></div>
+    </div>
+    <div class="notes2" id="cnotes">
+      <div class="note" data-n="1" tabindex="0" role="button"><span class="ic">1</span><span>Walk along <b>Lavender Street</b>. Go into <b>Clark Park</b>.</span></div>
+      <div class="note" data-n="2" tabindex="0" role="button"><span class="ic">2</span><span>Walk through the park. The garden is <b>below</b> the park.</span></div>
+      <div class="note warn" data-n="3" tabindex="0" role="button"><span class="ic">!</span><span>Go down the <b>steps</b> into the garden. Hold the rail. Stay on the paths.</span></div>
+      <div class="note" data-n="4" tabindex="0" role="button"><span class="ic">WC</span><span><b>Toilets:</b> Quibaree Park, at the bottom of the Walker Street steps.</span></div>
+      <div class="note"><span class="ic">&#9855;</span><span><b>No steps:</b> use the way in opposite the Kirribilli Club, next to the war memorial.</span></div>
+      <div class="note warn"><span class="ic">!</span><span>Stay with your group. No people in your hunt photos.</span></div>
+    </div>
+  </div>
+</section>
+
+<p class="foot">The maps are not to scale. They show the order of places.</p>
+</main>
+
+<script>
+(function(){
+  'use strict';
+  var $=function(id){return document.getElementById(id);};
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- text size ---------- */
+  var SIZES=[17,20,24,28], si=1, KEY='vu23562_lavender_map_fs';
+  try{var v=localStorage.getItem(KEY); if(v!==null&&SIZES[+v])si=+v;}catch(e){}
+  function applySize(){
+    document.documentElement.style.setProperty('--fs',SIZES[si]+'px');
+    $('aMinus').disabled=si===0; $('aPlus').disabled=si===SIZES.length-1;
+    try{localStorage.setItem(KEY,String(si));}catch(e){}
+  }
+  $('aMinus').addEventListener('click',function(){if(si>0){si--;applySize();}});
+  $('aPlus').addEventListener('click',function(){if(si<SIZES.length-1){si++;applySize();}});
+  applySize();
+
+  /* ---------- what to bring checklist ---------- */
+  var BKEY='vu23562_lavender_pack_v2', packed=[];
+  try{ var pv=JSON.parse(localStorage.getItem(BKEY)); if(Array.isArray(pv)) packed=pv.filter(function(x){return typeof x==='number'&&x>=0&&x<9;}); }catch(e){}
+  var bitems=[].slice.call(document.querySelectorAll('#bring .item'));
+  function paintPack(){
+    bitems.forEach(function(b,i){ var on=packed.indexOf(i)>=0; b.classList.toggle('on',on); b.setAttribute('aria-pressed',on?'true':'false'); b.querySelector('.tick').textContent=on?'\u2713':''; });
+    $('packCount').textContent=packed.length+' of '+bitems.length+' packed';
+    $('packMeter').style.width=(100*packed.length/bitems.length)+'%';
+    $('packDone').classList.toggle('on',packed.length===bitems.length);
+    $('packClear').disabled=packed.length===0;
+    try{ localStorage.setItem(BKEY,JSON.stringify(packed)); }catch(e){}
+  }
+  bitems.forEach(function(b,i){ b.addEventListener('click',function(){ var at=packed.indexOf(i); if(at>=0) packed.splice(at,1); else packed.push(i); paintPack(); }); });
+  $('packClear').addEventListener('click',function(){ packed=[]; paintPack(); });
+  paintPack();
+
+  /* ---------- route map ---------- */
+  var POS=[[120,70],[520,250],[500,386],[450,395],[442,428],[540,478],[702,520],[560,482],[520,250],[120,70],[120,70]];
+  var TIMES=['9:10 am','9:15 am','9:25 am','9:40 am','9:45 am','11:00 am','11:30 am','12:00 pm','1:15 pm','1:35 pm','2:00 pm'];
+  var STEP_PIN=[0,1,-1,2,3,4,5,4,1,0,0];
+  var PIN_STEP=[0,1,3,4,5,6];
+  var items=[].slice.call(document.querySelectorAll('#dirs li'));
+  var pins=[].slice.call(document.querySelectorAll('#map .pin'));
+  var walker=$('walker'), halo=$('halo'), bubble=$('bubble'), bubbleT=$('bubbleT');
+  var cur=0, anim=null, playing=false, playT=null;
+
+  function place(x,y){
+    walker.setAttribute('cx',x); walker.setAttribute('cy',y);
+    halo.setAttribute('cx',x); halo.setAttribute('cy',y);
+    var bx=x+18, by=y-46; if(bx>690) bx=x-138; if(by<4) by=y+18;
+    bubble.setAttribute('transform','translate('+bx+','+by+')');
+  }
+  function scrollMapTo(x){
+    var sc=$('routeScroll'), svg=$('map'); var extra=sc.scrollWidth-sc.clientWidth; if(extra<=0) return;
+    var px=x*svg.getBoundingClientRect().width/820; sc.scrollLeft=Math.max(0,Math.min(extra,px-sc.clientWidth/2));
+  }
+  function paint(){
+    items.forEach(function(li,i){ li.classList.toggle('cur',i===cur); li.classList.toggle('done',i<cur); li.setAttribute('aria-pressed',i===cur?'true':'false'); });
+    pins.forEach(function(p,k){
+      p.classList.toggle('cur',STEP_PIN[cur]===k);
+      var seen=false; for(var j=0;j<=cur;j++) if(STEP_PIN[j]===k) seen=true;
+      p.classList.toggle('done',seen&&STEP_PIN[cur]!==k);
+    });
+    bubbleT.textContent=(cur+1)+' · '+TIMES[cur];
+    var w=bubbleT.getComputedTextLength?bubbleT.getComputedTextLength():100;
+    bubble.querySelector('rect').setAttribute('width',Math.ceil(w)+20);
+    $('prevStep').disabled=cur===0; $('nextStep').disabled=cur===items.length-1;
+  }
+  function animSeg(segs,done){
+    if(!segs.length||reduce){ done(); return; }
+    var seg=$('s'+segs[0]); if(!seg){ animSeg(segs.slice(1),done); return; }
+    var L=seg.getTotalLength(), dur=Math.max(450,Math.min(1600,L*(segs.length>1?3:5))), t0=null;
+    function f(ts){ if(!t0)t0=ts; var k=Math.min(1,(ts-t0)/dur), e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2; var pt=seg.getPointAtLength(L*e); place(pt.x,pt.y); scrollMapTo(pt.x);
+      if(k<1) anim=requestAnimationFrame(f); else { anim=null; animSeg(segs.slice(1),done); } }
+    anim=requestAnimationFrame(f);
+  }
+  function go(n,opts){
+    opts=opts||{};
+    n=Math.max(0,Math.min(items.length-1,n));
+    if(anim){cancelAnimationFrame(anim);anim=null;}
+    var from=cur; cur=n; paint();
+    if(opts.scrollList){ var li=items[n], r=li.getBoundingClientRect(), mc=document.querySelector('#routeCard .mapcol').getBoundingClientRect();
+      var topLimit=(getComputedStyle(document.querySelector('#routeCard .mapcol')).position==='sticky'&&window.innerWidth<=900)?mc.bottom:70;
+      if(r.top<topLimit||r.bottom>window.innerHeight) window.scrollBy({top:r.top-topLimit-10,behavior:reduce?'auto':'smooth'}); }
+    var end=function(){ place(POS[n][0],POS[n][1]); scrollMapTo(POS[n][0]); if(opts.after) opts.after(); };
+    if(n>from){ var segs=[]; for(var s=from;s<n;s++) if(s<=8) segs.push(s); animSeg(segs,end); }
+    else end();
+  }
+  items.forEach(function(li,i){
+    li.addEventListener('click',function(){ stopPlay(); go(i); });
+    li.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); stopPlay(); go(i); } });
+  });
+  pins.forEach(function(p,k){ p.addEventListener('click',function(){ stopPlay(); go(PIN_STEP[k],{scrollList:true}); }); });
+  $('nextStep').addEventListener('click',function(){ stopPlay(); go(cur+1,{scrollList:true}); });
+  $('prevStep').addEventListener('click',function(){ stopPlay(); go(cur-1,{scrollList:true}); });
+
+  function stopPlay(){ playing=false; clearTimeout(playT); $('playBtn').innerHTML='&#9654; Play the route'; }
+  function playNext(){
+    if(!playing) return;
+    if(cur>=items.length-1){ stopPlay(); return; }
+    go(cur+1,{scrollList:true, after:function(){ if(playing) playT=setTimeout(playNext,1400); }});
+  }
+  $('playBtn').addEventListener('click',function(){
+    if(playing){ stopPlay(); return; }
+    playing=true; $('playBtn').innerHTML='&#10074;&#10074; Pause';
+    if(cur>=items.length-1){ go(0); playT=setTimeout(playNext,700); } else playNext();
+  });
+
+  /* ---------- close-up map ---------- */
+  var notes=[].slice.call(document.querySelectorAll('#cnotes .note[data-n]'));
+  var cwalker=$('cwalker'), chalo=$('chalo'), cpath=$('cpath'), CL=0, cAt=0, canim=null;
+  var STOP_AT={1:0.12, 2:0.43, 3:1, 4:null};
+  function cplace(d){ var pt=cpath.getPointAtLength(d); cwalker.setAttribute('cx',pt.x); cwalker.setAttribute('cy',pt.y); chalo.setAttribute('cx',pt.x); chalo.setAttribute('cy',pt.y); cScroll(pt.x); }
+  function cScroll(x){ var sc=$('closeScroll'), svg=$('cmap'); var extra=sc.scrollWidth-sc.clientWidth; if(extra<=0) return; var px=x*svg.getBoundingClientRect().width/820; sc.scrollLeft=Math.max(0,Math.min(extra,px-sc.clientWidth/2)); }
+  function cMoveTo(frac,done){
+    if(canim){cancelAnimationFrame(canim);canim=null;}
+    CL=cpath.getTotalLength(); var target=CL*frac, start=cAt;
+    if(reduce||Math.abs(target-start)<1){ cAt=target; cplace(cAt); if(done)done(); return; }
+    var dur=Math.max(500,Math.abs(target-start)*4), t0=null;
+    function f(ts){ if(!t0)t0=ts; var k=Math.min(1,(ts-t0)/dur), e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2; cAt=start+(target-start)*e; cplace(cAt); if(k<1) canim=requestAnimationFrame(f); else { canim=null; if(done)done(); } }
+    canim=requestAnimationFrame(f);
+  }
+  function cSelect(n,fromMap){
+    notes.forEach(function(el){ var on=+el.getAttribute('data-n')===n; el.classList.toggle('cur',on); el.setAttribute('aria-pressed',on?'true':'false'); });
+    for(var i=1;i<=4;i++) $('hl'+i).classList.toggle('on',i===n);
+    if(STOP_AT[n]!=null) cMoveTo(STOP_AT[n]);
+    else { var sc=$('closeScroll'); var extra=sc.scrollWidth-sc.clientWidth; if(extra>0) sc.scrollLeft=extra; }
+    if(fromMap){ var el=notes[n-1], r=el.getBoundingClientRect(); if(r.top<70||r.bottom>window.innerHeight){ var mc=document.querySelectorAll('.mapcol')[1].getBoundingClientRect(); var lim=(window.innerWidth<=900&&getComputedStyle(document.querySelectorAll('.mapcol')[1]).position==='sticky')?mc.bottom:70; window.scrollBy({top:r.top-lim-10,behavior:reduce?'auto':'smooth'}); } }
+  }
+  notes.forEach(function(el){
+    var n=+el.getAttribute('data-n');
+    el.addEventListener('click',function(){ cSelect(n,false); });
+    el.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); cSelect(n,false); } });
+  });
+  document.querySelectorAll('#cmap .area').forEach(function(a){ a.addEventListener('click',function(){ cSelect(+a.getAttribute('data-n'),true); }); });
+  $('cPlay').addEventListener('click',function(){
+    cAt=0; cSelect(1,false);
+    setTimeout(function(){ cSelect(2,false); setTimeout(function(){ cSelect(3,false); },1300); },1100);
+  });
+
+  /* ---------- start ---------- */
+  function init(){ paint(); place(POS[0][0],POS[0][1]); scrollMapTo(POS[0][0]); CL=cpath.getTotalLength(); cAt=0; cplace(0); var sc=$('closeScroll'); var extra=sc.scrollWidth-sc.clientWidth; if(extra>0) sc.scrollLeft=extra/2; }
+  init(); window.addEventListener('load',init);
+  window.addEventListener('resize',function(){ scrollMapTo(POS[cur][0]); });
+})();
+</script>
+</body>
+</html>
